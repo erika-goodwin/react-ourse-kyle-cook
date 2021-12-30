@@ -36,15 +36,11 @@ function App() {
     handleRecipeUpdate,
   };
 
-  function handleRecipeUpdate(e) {
-    const { value, name } = e.target;
-    // setRecipes((preState) => {
-    //   ...prestate,
-    //   [name]:value,
-    // })
-
-    //something wrong hahahahah
-    setRecipes((prevState) => [...prevState, selectedRecipe]);
+  function handleRecipeUpdate(id, recipe) {
+    const newRecipes = [...recipes];
+    const index = newRecipes.findIndex((r) => r.id === id);
+    newRecipes[index] = recipe;
+    setRecipes(newRecipes);
   }
 
   function handleRecipeSelect(id) {
@@ -54,22 +50,26 @@ function App() {
   function handleRecipeAdd() {
     const newRecipe = {
       id: uuidv4(),
-      name: "New",
+      name: "",
       servings: 1,
-      cookTime: "1:00",
-      instructions: "Instr.",
+      cookTime: "",
+      instructions: "",
       ingredients: [
         {
           id: uuidv4(),
-          name: "name",
-          amount: "1 Tbs",
+          name: "",
+          amount: "",
         },
       ],
     };
+    setSelectedRecipeId(newRecipe.id);
     setRecipes([...recipes, newRecipe]);
   }
 
   function handleRecipeDelete(id) {
+    if (selectedRecipeId !== null && selectedRecipeId === id) {
+      setSelectedRecipeId(undefined);
+    }
     setRecipes(recipes.filter((recipes) => recipes.id !== id));
   }
 
